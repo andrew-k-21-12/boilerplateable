@@ -1,0 +1,53 @@
+plugins {
+    id 'org.jetbrains.kotlin.android'
+    id 'com.android.application'
+
+    // No KSP magic will happen without the corresponding plugin applied.
+    id 'com.google.devtools.ksp'
+
+}
+
+android {
+    compileSdk Configs.compileAndTargetSdk
+    defaultConfig {
+        applicationId 'io.github.andrewk2112.boilerplateable.demo'
+        minSdk    Configs.minSdk
+        targetSdk Configs.compileAndTargetSdk
+        versionCode  1
+        versionName '1.0.0'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    // The outputs of the KSP are included for the compilation automatically
+    // (or at least it happens in this way for me),
+    // the only reason of this config is to make the generated sources visible in the IDE.
+    sourceSets.debug {
+        kotlin.srcDir "$buildDir/generated/ksp/debug/kotlin"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    // Launching our KSP and providing the target annotation to the sources.
+    ksp(project(':processor'))
+    implementation(project(':processor'))
+
+    implementation 'com.google.android.material:material:1.4.0'
+}

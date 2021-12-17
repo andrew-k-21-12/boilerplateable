@@ -1,0 +1,2 @@
+# The KSP processor provider must be registered in this file.
+io.github.andrewk2112.boilerplateable.processor.ViewBindingInflatingProcessor$Provider
